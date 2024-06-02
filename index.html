@@ -1,0 +1,194 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IDS Quizzer</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="description" content="">
+
+  <meta property="og:title" content="">
+  <meta property="og:type" content="">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="">
+
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#fafafa">
+
+<!--  styles-->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+
+
+<!--  more priority, that is this iswhy not in a file-->
+<style type="text/css">
+  .option:nth-child(odd){
+    border-right: #555555 2px solid;
+  }
+  .option_bottom_border{
+    border-bottom: #555555 2px solid;
+  }
+
+  .calcbutton:nth-of-type(even){
+    background-color: #c285c8;
+  }
+  .calcbutton:hover{
+    background-color: rosybrown;
+    box-shadow: black 2px 2px 2px 2px;
+  }
+  .calculator{
+    margin-bottom: 5vh;
+  }
+
+
+</style>
+
+
+</head>
+
+<body>
+
+<!--Navbar begins-->
+<nav class="navbar navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      IDS Quizzer
+    </a>
+  </div>
+</nav>
+<!--Navbar ends-->
+
+<!--quiz selection ui-->
+<div id="quiz-selection" class="row justify-content-start g-1">
+  <div class="col-md-4 btn-group">
+  <input type="text" list="quizOptions" id="quizCategory" placeholder="Type..." x-webkit-speech>
+  <datalist id="quizOptions">
+    <option>Science</option>
+    <option>History</option>
+    <option>Current Affairs</option>
+    <option>Geography</option>
+    <option>Countries & Cultures</option>
+  </datalist>
+  <button id="voiceRecon" onclick="voiceRecon();">
+    <span><i class="fa fa-solid fa-microphone"></i></span>
+  </button>
+  </div>
+  <div class="col-md-8 btn-group ">
+      <input type="radio" class="btn-check" name="options-outlined" id="ez" autocomplete="off" checked>
+      <label class="btn btn-outline-success" for="ez">Easy</label>
+
+      <input type="radio" class="btn-check" name="options-outlined" id="medium" autocomplete="off">
+      <label class="btn btn-outline-warning" for="medium">Medium</label>
+
+      <input type="radio" class="btn-check" name="options-outlined" id="hard" autocomplete="off">
+      <label class="btn btn-outline-danger" for="hard">Hard</label>
+      <button id="go" class="btn btn-primary" onclick="startQuiz();">Go!!</button>
+  </div>
+
+  </div>
+
+<!--quiz selection ui ends-->
+
+<!--Quiz questions ui begins-->
+<div class="row">
+<h3 id="Question" class="col">Questions Appear here</h3>
+</div>
+
+<!--timer-->
+<label for="timer" style="font-weight: bold;" >Timer: </label>
+<span id="timer" >15</span>
+
+<div id="OptionsDiv">
+<div class="btn-group row container-fluid">
+  <button class="btn col-3 option option_bottom_border" value="0">Option 1</button>
+  <button class="btn col-3 option option_bottom_border" value="1">Option 2</button>
+</div>
+
+<div class="btn-group row container-fluid">
+  <button class="btn col-3 option" value="2">Option 3</button>
+  <button class="btn col-3 option" value="3">Option 4</button>
+</div>
+</div>
+
+
+<button id="nxtButton" class="btn btn-primary" style="display: none;" onclick="Quiz();">
+  Next question
+</button>
+<p id="result" class="p">
+</p>
+
+<!--progress bar, progress is appended by the script-->
+<div class="progress" id="ProgressBar">
+
+</div>
+
+
+<!--Quiz questions ui ends-->
+
+<!--Calculator utility begins-->
+<div class="container">
+  <div class="calculator border rounded p-3">
+    <div class="display d-flex justify-content-end align-items-center border-bottom pb-2">
+      <input type="text" class="form-control text-right" id="calcResult" readonly>
+    </div>
+    <div class="buttons mt-2 container-fluid">
+      <div class="row">
+        <button class="btn btn-light col-3 operator calcbutton" value="+">+</button>
+        <button class="btn btn-light col-3 operator calcbutton" value="-">-</button>
+        <button class="btn btn-light col-3 operator calcbutton" value="*">&times;</button>
+        <button class="btn btn-light col-3 operator calcbutton" value="/">/</button>
+      </div>
+      <br>
+      <div class="row">
+        <button class="btn btn-light col-3 number calcbutton" value="7">7</button>
+        <button class="btn btn-light col-3 number calcbutton" value="8">8</button>
+        <button class="btn btn-light col-3 number calcbutton" value="9">9</button>
+        <button id="calcClear" class="btn btn-light calcbutton col-3" value="C">C</button>
+      </div>
+      <br>
+      <div class="row">
+        <button class="btn btn-light col-3 number calcbutton" value="4">4</button>
+        <button class="btn btn-light col-3 number calcbutton" value="5">5</button>
+        <button class="btn btn-light col-3 number calcbutton" value="6">6</button>
+        <button class="btn btn-light col-3 operator calcbutton" value=".">.</button>
+      </div>
+      <br/>
+      <div class="row">
+        <button class="btn btn-light col-3 number calcbutton" value="1">1</button>
+        <button class="btn btn-light col-3 number calcbutton" value="2">2</button>
+        <button class="btn btn-light col-3 number calcbutton" value="3">3</button>
+        <button id="calcEqual" class="btn btn-light col-3 calcbutton" onclick="calculate();">&#x3d;</button>
+      </div>
+      <br/>
+      <div class="row">
+        <button class="btn btn-light col-3 number calcbutton" value="0">0</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Calculator utility ends-->
+<br><br><br><br>
+<!--Footer begins-->
+<footer class="fixed-bottom bg-dark text-white text-center p-2 ">
+  This site is maintained by <span id="Name"  style="display: inline-block;" class="animate__animated animate__jello animate__infinite">Master Saransh S. Rade</span>
+</footer>
+<!--Footer ends-->
+
+<!--bs5 js included at the end of the html-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<!--  scripts-->
+<script src="./js/Data/DataHolder.js"></script>
+<script src="./js/Quiz.js"></script>
+<script src="./js/app.js"></script>
+</body>
+
+</html>
