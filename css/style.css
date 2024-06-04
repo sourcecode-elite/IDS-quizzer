@@ -1,0 +1,24 @@
+#Question{
+  margin-top: 7vh;
+}
+#OptionsDiv{
+  margin-top: 5vh;
+}
+#ProgressBar{
+  margin-top: 7vh;
+}
+
+.hide{
+  display: none;
+}
+#calculatorForm{
+  margin-top: 8vh;
+}
+
+.option:hover{
+  background-color: rosybrown;
+  box-shadow: black 2px 2px 2px 2px;
+}
+
+
+
